@@ -1,5 +1,4 @@
-﻿@model Telerik.Web.Mvc.GridModel<CurrencyModel>
-@using Telerik.Web.Mvc.UI
+﻿@using Telerik.Web.Mvc.UI
 @{
     List<Nop.Core.Domain.Directory.ExchangeRate> rates = ViewBag.Rates;
     bool autoUpdateEnabled = ViewBag.AutoUpdateEnabled ?? false;
@@ -44,7 +43,6 @@
         <td>
             @(Html.Telerik().Grid<CurrencyModel>()
                     .Name("currencies-grid")
-                    .BindTo(Model.Data)
                     .Columns(columns =>
                     {
                         columns.Bound(x => x.Name);
@@ -62,6 +60,7 @@
                                 .Width(100);
                         columns.Bound(x => x.Id)
                             .Template(x => Html.ActionLink(T("Admin.Configuration.Currencies.Fields.MarkAsPrimaryExchangeRateCurrency").Text, "MarkAsPrimaryExchangeRateCurrency", new { id = x.Id }, new { @class = "t-button" }))
+                            .ClientTemplate("<a href=\"" + @Url.Content("~/Admin/Currency/MarkAsPrimaryExchangeRateCurrency/") + "<#= Id #>\" class=\"t-button\">" + T("Admin.Configuration.Currencies.Fields.MarkAsPrimaryExchangeRateCurrency").Text + "</a>")
                             .Centered()
                             .HeaderTemplate(T("Admin.Configuration.Currencies.Fields.MarkAsPrimaryExchangeRateCurrency").Text);
                         columns.Bound(x => x.IsPrimaryStoreCurrency)
@@ -73,6 +72,7 @@
                                 .Width(100);
                         columns.Bound(x => x.Id)
                             .Template(x => Html.ActionLink(T("Admin.Configuration.Currencies.Fields.MarkAsPrimaryStoreCurrency").Text, "MarkAsPrimaryStoreCurrency", new { id = x.Id }, new { @class = "t-button" }))
+                            .ClientTemplate("<a href=\"" + @Url.Content("~/Admin/Currency/MarkAsPrimaryStoreCurrency/") + "<#= Id #>\" class=\"t-button\">" + T("Admin.Configuration.Currencies.Fields.MarkAsPrimaryStoreCurrency").Text + "</a>")
                             .Centered()
                             .HeaderTemplate(T("Admin.Configuration.Currencies.Fields.MarkAsPrimaryStoreCurrency").Text);
                         columns.Bound(x => x.Published)

@@ -32,7 +32,7 @@
                         @T("ShoppingCart.Totals.Shipping")
                         @if (Model.RequiresShipping && !String.IsNullOrEmpty(Model.SelectedShippingMethod))
                         {
-                            @String.Format("({0})", Model.SelectedShippingMethod)
+                            @T("ShoppingCart.Totals.Shipping.Method", Model.SelectedShippingMethod)
                         }
                         :</strong>
                 </td>
@@ -115,14 +115,13 @@
                 <tr>
                     <td class="cart-total-left">
                         <strong>
-                            @string.Format(T("ShoppingCart.Totals.GiftCardInfo").Text, gc.CouponCode):</strong>
+                            @T("ShoppingCart.Totals.GiftCardInfo", gc.CouponCode):</strong>
                     </td>
                     <td class="cart-total-right">
                         <span class="product-price">@gc.Amount</span>
                         @if (Model.IsEditable)
                         {
-                            <input type="submit" name="removegiftcard" value="@T("Common.Remove")" />
-                            <input type="hidden" name="giftcardid" value="@gc.Id" />
+                            <input type="submit" name="removegiftcard-@gc.Id" value="@T("Common.Remove")" class="remove-gift-card-button" />
                         }
                     </td>
                 </tr>

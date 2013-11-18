@@ -1,5 +1,10 @@
 ﻿@model ShoppingCartModel
+@using Nop.Core
+@using Nop.Core.Infrastructure
 @using Nop.Web.Models.ShoppingCart;
+@{
+    var webHelper = EngineContext.Current.Resolve<IWebHelper>();
+}
 <div class="order-summary-content">
     @Html.Widget("order_summary_content_before")
     @Html.Partial("_OrderReviewData", Model.OrderReviewData)
@@ -93,7 +98,7 @@
                             </td>
                         }
                         <td class="product">
-                            <a href="@Url.RouteUrl("Product", new { SeName = item.ProductSeName })">@item.ProductName</a>
+                            <a href="@Url.RouteUrl("Product", new { SeName = item.ProductSeName })" class="product-name">@item.ProductName</a>
                             @if (!String.IsNullOrEmpty(item.AttributeInfo))
                             {
                                 <div class="attributes">
@@ -104,6 +109,14 @@
                             {
                                 <div class="recurring-info">
                                     @Html.Raw(item.RecurringInfo)
+                                </div>
+                            }
+                            @if (Model.IsEditable && item.AllowItemEditing)
+                            {
+                                var editCartItemUrl = Url.RouteUrl("Product", new {SeName = item.ProductSeName});
+                                editCartItemUrl = webHelper.ModifyQueryString(editCartItemUrl, "updatecartitemid=" + item.Id, null);
+                                <div class="edit-item">
+                                    <a href="@editCartItemUrl">@T("Common.Edit")</a>
                                 </div>
                             }
                             @if (item.Warnings.Count > 0)
@@ -190,7 +203,7 @@
                 @Html.Action("OrderTotals", "ShoppingCart", new { isEditable = Model.IsEditable })
                 @if (Model.IsEditable)
                 {
-                    if (Model.TermsOfServiceEnabled)
+                    if (Model.TermsOfServiceOnShoppingCartPage)
                     {
                     <div id="terms-of-service-warning-box" title="@T("Checkout.TermsOfService")" style="display:none;">
                         <p>@T("Checkout.TermsOfService.PleaseAccept")</p>
@@ -198,23 +211,7 @@
                     <div class="terms-of-service">
                         <input id="termsofservice" type="checkbox" name="termsofservice" />
                         @T("Checkout.TermsOfService.IAccept")
-                        @*uncomment below to how simple pop-up*@ @*<span class="read" onclick="javascript:OpenWindow('@Url.RouteUrl("TopicPopup", new { SystemName = "conditionsofUse" })', 450, 500, true)">@T("Checkout.TermsOfService.Read")</span>*@
-                        @*use fancybox to how nice pop-up*@
-                        @{
-                        Html.AddScriptParts("~/Scripts/jquery.fancybox-1.3.4.pack.js");
-                        Html.AddCssFileParts("~/Content/fancybox/jquery.fancybox-1.3.4.css");
-                        }
-                        <a class="read" href='@Url.RouteUrl("TopicPopup", new { SystemName = "conditionsofUse" })'>@T("Checkout.TermsOfService.Read")</a>
-                        <script type="text/javascript">
-                            $(".terms-of-service .read").fancybox({
-                                'speedIn': 600,
-                                'speedOut': 200,
-                                'width': 450,
-                                'height': 500,
-                                'type': 'iframe',
-                                'centerOnScroll': true
-                            });
-                        </script>
+                        <span class="read" onclick="javascript:OpenWindow('@Url.RouteUrl("TopicPopup", new { SystemName = "conditionsofUse" })', 450, 500, true)">@T("Checkout.TermsOfService.Read")</span>
                     </div>
                     }
                     <div class="checkout-buttons">
@@ -223,19 +220,16 @@
                             <script type="text/javascript">
                                 $(document).ready(function () {
                                     $('#checkout').click(function () {
-                                        //terms of services
+                                        //terms of service
                                         var termOfServiceOk = true;
-                                        @if (Model.TermsOfServiceEnabled)
-                                        {
-                                                <text>
-                                        if (!$('#termsofservice').is(':checked')) {
-                                            $("#terms-of-service-warning-box").dialog();
-                                            termOfServiceOk = false;
-                                        }
-                                        else {
-                                            termOfServiceOk = true;
-                                        }
-                                                </text>
+                                        if ($('#termsofservice').length > 0) {
+                                            //terms of service element exists
+                                            if (!$('#termsofservice').is(':checked')) {
+                                                $("#terms-of-service-warning-box").dialog();
+                                                termOfServiceOk = false;
+                                            } else {
+                                                termOfServiceOk = true;
+                                            }
                                         }
                                         return termOfServiceOk;
                                     });

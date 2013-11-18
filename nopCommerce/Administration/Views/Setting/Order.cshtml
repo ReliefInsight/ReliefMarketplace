@@ -32,6 +32,25 @@
 }
 @helper TabOrderSettings()
 {
+    
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("#@Html.FieldIdFor(model => model.OnePageCheckoutEnabled)").click(toggleOnePageCheckoutEnabled);
+
+            toggleOnePageCheckoutEnabled();
+        });
+
+        function toggleOnePageCheckoutEnabled() {
+            if ($('#@Html.FieldIdFor(model => model.OnePageCheckoutEnabled)').is(':checked')) {
+                $('#pnlOnePageCheckoutDisplayOrderTotalsOnPaymentInfoTab').show();
+            }
+            else {
+                $('#pnlOnePageCheckoutDisplayOrderTotalsOnPaymentInfoTab').hide();
+            }
+        }
+        
+    </script>
     <table class="adminContent">
         <tr>
             <td class="adminTitle">
@@ -75,12 +94,22 @@
         </tr>
         <tr>
             <td class="adminTitle">
-                @Html.OverrideStoreCheckboxFor(model => model.TermsOfServiceEnabled_OverrideForStore, model => model.TermsOfServiceEnabled, Model.ActiveStoreScopeConfiguration)
-                @Html.NopLabelFor(model => model.TermsOfServiceEnabled):
+                @Html.OverrideStoreCheckboxFor(model => model.TermsOfServiceOnShoppingCartPage_OverrideForStore, model => model.TermsOfServiceOnShoppingCartPage, Model.ActiveStoreScopeConfiguration)
+                @Html.NopLabelFor(model => model.TermsOfServiceOnShoppingCartPage):
             </td>
             <td class="adminData">
-                @Html.EditorFor(model => model.TermsOfServiceEnabled)
-                @Html.ValidationMessageFor(model => model.TermsOfServiceEnabled)
+                @Html.EditorFor(model => model.TermsOfServiceOnShoppingCartPage)
+                @Html.ValidationMessageFor(model => model.TermsOfServiceOnShoppingCartPage)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.OverrideStoreCheckboxFor(model => model.TermsOfServiceOnOrderConfirmPage_OverrideForStore, model => model.TermsOfServiceOnOrderConfirmPage, Model.ActiveStoreScopeConfiguration)
+                @Html.NopLabelFor(model => model.TermsOfServiceOnOrderConfirmPage):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.TermsOfServiceOnOrderConfirmPage)
+                @Html.ValidationMessageFor(model => model.TermsOfServiceOnOrderConfirmPage)
             </td>
         </tr>
         <tr>
@@ -93,6 +122,16 @@
                 @Html.ValidationMessageFor(model => model.OnePageCheckoutEnabled)
             </td>
         </tr>
+        <tr id="pnlOnePageCheckoutDisplayOrderTotalsOnPaymentInfoTab">
+            <td class="adminTitle">
+                @Html.OverrideStoreCheckboxFor(model => model.OnePageCheckoutDisplayOrderTotalsOnPaymentInfoTab_OverrideForStore, model => model.OnePageCheckoutDisplayOrderTotalsOnPaymentInfoTab, Model.ActiveStoreScopeConfiguration)
+                @Html.NopLabelFor(model => model.OnePageCheckoutDisplayOrderTotalsOnPaymentInfoTab):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.OnePageCheckoutDisplayOrderTotalsOnPaymentInfoTab)
+                @Html.ValidationMessageFor(model => model.OnePageCheckoutDisplayOrderTotalsOnPaymentInfoTab)
+            </td>
+        </tr>
         <tr>
             <td class="adminTitle">
                 @Html.OverrideStoreCheckboxFor(model => model.DisableOrderCompletedPage_OverrideForStore, model => model.DisableOrderCompletedPage, Model.ActiveStoreScopeConfiguration)
@@ -101,6 +140,26 @@
             <td class="adminData">
                 @Html.EditorFor(model => model.DisableOrderCompletedPage)
                 @Html.ValidationMessageFor(model => model.DisableOrderCompletedPage)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.OverrideStoreCheckboxFor(model => model.AttachPdfInvoiceToOrderPlacedEmail_OverrideForStore, model => model.AttachPdfInvoiceToOrderPlacedEmail, Model.ActiveStoreScopeConfiguration)
+                @Html.NopLabelFor(model => model.AttachPdfInvoiceToOrderPlacedEmail):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.AttachPdfInvoiceToOrderPlacedEmail)
+                @Html.ValidationMessageFor(model => model.AttachPdfInvoiceToOrderPlacedEmail)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.OverrideStoreCheckboxFor(model => model.AttachPdfInvoiceToOrderCompletedEmail_OverrideForStore, model => model.AttachPdfInvoiceToOrderCompletedEmail, Model.ActiveStoreScopeConfiguration)
+                @Html.NopLabelFor(model => model.AttachPdfInvoiceToOrderCompletedEmail):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.AttachPdfInvoiceToOrderCompletedEmail)
+                @Html.ValidationMessageFor(model => model.AttachPdfInvoiceToOrderCompletedEmail)
             </td>
         </tr>
         <tr>

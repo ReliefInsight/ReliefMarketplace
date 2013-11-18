@@ -1,15 +1,30 @@
 ﻿@using Nop.Core.Domain.Customers
+@using Nop.Core.Domain.Localization
 @using Telerik.Web.Mvc.UI;
 @using Nop.Web.Framework.UI;
 @using Nop.Core;
+@using Nop.Core.Domain.Common;
+@using Nop.Services.Security;
 @{
     var currentCustomer = this.WorkContext.CurrentCustomer;
-    var usernamesEnabled = EngineContext.Current.Resolve<Nop.Core.Domain.Customers.CustomerSettings>().UsernamesEnabled;
+    var usernamesEnabled = EngineContext.Current.Resolve<CustomerSettings>().UsernamesEnabled;
     var currentVersion = NopVersion.CurrentVersion;
 
+    var supportRtl = EngineContext.Current.Resolve<IWorkContext>().WorkingLanguage.Rtl &&
+        !EngineContext.Current.Resolve<LocalizationSettings>().IgnoreRtlPropertyForAdminArea;
+    
     //resources
-    Html.AppendCssFileParts("~/Administration/Content/styles.css");
+    Html.AppendCssFileParts("~/Content/jquery-ui-themes/smoothness/jquery-ui-1.10.0.custom.min.css");
+    if (supportRtl)
+    {
+        Html.AppendCssFileParts("~/Administration/Content/styles.rtl.css");
+    }
+    else
+    {
+        Html.AppendCssFileParts("~/Administration/Content/styles.css");
+    }
     Html.AppendScriptParts("~/Administration/Scripts/admin.common.js");
+    Html.AppendScriptParts("~/Scripts/jquery-ui-1.10.0.min.js");
     Html.AppendScriptParts("~/Administration/Scripts/jquery.validate.unobtrusive.min.js");
     Html.AppendScriptParts("~/Administration/Scripts/jquery.validate.min.js");
     Html.AppendScriptParts("~/Administration/Scripts/jquery.unobtrusive-ajax.min.js");
@@ -22,16 +37,28 @@
         adminPageTitle = ViewBag.Title + " / ";
     }
     adminPageTitle += T("Admin.PageTitle").Text;
+
+    //has "Manage Maintenance" permission?
+    var canManageMaintenance = EngineContext.Current.Resolve<IPermissionService>()
+        .Authorize(StandardPermissionProvider.ManageMaintenance);
+
+    //X-UA-Compatible tag
+    var commonSettings = EngineContext.Current.Resolve<CommonSettings>();
+    if (commonSettings.RenderXuaCompatible)
+    {
+        Html.AppendHeadCustomParts(string.Format("<meta http-equiv=\"X-UA-Compatible\" content=\"{0}\"/>", commonSettings.XuaCompatibleValue));
+    }
 }
 <!DOCTYPE html>
-<html>
+<html @(supportRtl ? Html.Raw("dir=\"rtl\"") : null)>
 <head>
     <title>@adminPageTitle</title>
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    @Html.NopHeadCustom()
     @Html.NopCssFiles(this.Url, ResourceLocation.Head)
     @Html.NopScripts(this.Url, ResourceLocation.Head)
 </head>
-<body>
+<body @(supportRtl ? Html.Raw("class=\"t-rtl\"") : null)>
     <div id="ajaxBusy">
         <span>&nbsp;</span>
     </div>
@@ -47,8 +74,8 @@
                     $(document).ready(function () {
                         $("#restart-application").click(function (e) {
                             showThrobber('@Html.Raw(HttpUtility.JavaScriptStringEncode(T("Admin.Header.RestartApplication.Progress").Text))');
-                            });
                         });
+                    });
                 </script>
                 <div class="header">
                     <div class="logo">
@@ -60,10 +87,13 @@
                     @Html.Widget("admin_header_middle")
                     <div class="links">
                         @Html.ActionLink(T("Admin.Header.PublicStore").Text, "Index", "Home", new { area = "" }, null)
-                        <span class="separator">|</span>
-                        @Html.ActionLink(T("Admin.Header.ClearCache").Text, "ClearCache", "Common")
-                        <span class="separator">|</span>
-                        @Html.ActionLink(T("Admin.Header.RestartApplication").Text, "RestartApplication", "Common", null, new { id = "restart-application" })
+                        @if (canManageMaintenance)
+                        {
+                            <span class="separator">|</span>
+                            @Html.ActionLink(T("Admin.Header.ClearCache").Text, "ClearCache", "Common")
+                            <span class="separator">|</span>
+                            @Html.ActionLink(T("Admin.Header.RestartApplication").Text, "RestartApplication", "Common", null, new { id = "restart-application" })
+                        }
                     </div>
                     <div class="login-info">
                         @if (currentCustomer != null && currentCustomer.IsRegistered())
@@ -132,8 +162,10 @@
     @(Html.Telerik().ScriptRegistrar()
               .jQuery(false)
               .jQueryValidation(false)
-              )
+    )
     @Html.NopCssFiles(this.Url, ResourceLocation.Foot)
     @Html.NopScripts(this.Url, ResourceLocation.Foot)
 </body>
+
 </html>
+

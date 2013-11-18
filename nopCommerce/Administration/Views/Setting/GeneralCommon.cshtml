@@ -146,7 +146,27 @@
                 @Html.NopLabelFor(model => model.StoreInformationSettings.DefaultStoreThemeForDesktops):
             </td>
             <td class="adminData">
-                @Html.DropDownListFor(model => model.StoreInformationSettings.DefaultStoreThemeForDesktops, Model.StoreInformationSettings.AvailableStoreThemesForDesktops)
+                <ul style="list-style: none;">
+                    @foreach (var theme in Model.StoreInformationSettings.AvailableStoreThemesForDesktops)
+                    {
+                        <li style="float: left; width: 210px;">
+                            <p style="float: left; padding-top: 55px;">
+                                <input type="radio" name="@Html.FieldNameFor(x => x.StoreInformationSettings.DefaultStoreThemeForDesktops)" value="@theme.ThemeName" id="id_image_@theme.ThemeName"
+                                    @if (theme.ThemeName == Model.StoreInformationSettings.DefaultStoreThemeForDesktops)
+                                    {
+                                        <text>checked="checked"</text>
+                                    }>
+                            </p>
+                            <p style="float: left;">
+                                <label for="id_image_@theme.ThemeName">
+                                    <img src="@Url.Content(theme.PreviewImageUrl)" alt="@theme.PreviewText" title="@theme.PreviewText" width="175">
+                                    <br/>
+                                    <label style="text-align:center;font-weight:bold;width:170px;">@theme.ThemeTitle</label>
+                                </label>
+                            </p>
+                        </li>
+                    }
+                </ul>
                 @Html.ValidationMessageFor(model => model.StoreInformationSettings.DefaultStoreThemeForDesktops)
             </td>
         </tr>
@@ -176,7 +196,28 @@
                 @Html.NopLabelFor(model => model.StoreInformationSettings.DefaultStoreThemeForMobileDevices):
             </td>
             <td class="adminData">
-                @Html.DropDownListFor(model => model.StoreInformationSettings.DefaultStoreThemeForMobileDevices, Model.StoreInformationSettings.AvailableStoreThemesForMobileDevices)
+                
+                <ul style="list-style: none;">
+                    @foreach (var theme in Model.StoreInformationSettings.AvailableStoreThemesForMobileDevices)
+                    {
+                        <li style="float: left; width: 210px;">
+                            <p style="float: left; padding-top: 55px;">
+                                <input type="radio" name="@Html.FieldNameFor(x => x.StoreInformationSettings.DefaultStoreThemeForMobileDevices)" value="@theme.ThemeName" id="id_image_@theme.ThemeName"
+                                    @if (theme.ThemeName == Model.StoreInformationSettings.DefaultStoreThemeForMobileDevices)
+                                    {
+                                        <text>checked="checked"</text>
+                                    }>
+                            </p>
+                            <p style="float: left;">
+                                <label for="id_image_@theme.ThemeName">
+                                    <img src="@Url.Content(theme.PreviewImageUrl)" alt="@theme.PreviewText" title="@theme.PreviewText" width="175">
+                                    <br/>
+                                    <label style="text-align:center;font-weight:bold;width:170px;">@theme.ThemeTitle</label>
+                                </label>
+                            </p>
+                        </li>
+                    }
+                </ul>
                 @Html.ValidationMessageFor(model => model.StoreInformationSettings.DefaultStoreThemeForMobileDevices)
             </td>
         </tr>
@@ -188,6 +229,46 @@
             <td class="adminData">
                 @Html.EditorFor(model => model.StoreInformationSettings.DisplayEuCookieLawWarning)
                 @Html.ValidationMessageFor(model => model.StoreInformationSettings.DisplayEuCookieLawWarning)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.OverrideStoreCheckboxFor(model => model.StoreInformationSettings.FacebookLink_OverrideForStore, model => model.StoreInformationSettings.FacebookLink, Model.ActiveStoreScopeConfiguration)
+                @Html.NopLabelFor(model => model.StoreInformationSettings.FacebookLink):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.StoreInformationSettings.FacebookLink)
+                @Html.ValidationMessageFor(model => model.StoreInformationSettings.FacebookLink)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.OverrideStoreCheckboxFor(model => model.StoreInformationSettings.TwitterLink_OverrideForStore, model => model.StoreInformationSettings.TwitterLink, Model.ActiveStoreScopeConfiguration)
+                @Html.NopLabelFor(model => model.StoreInformationSettings.TwitterLink):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.StoreInformationSettings.TwitterLink)
+                @Html.ValidationMessageFor(model => model.StoreInformationSettings.TwitterLink)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.OverrideStoreCheckboxFor(model => model.StoreInformationSettings.YoutubeLink_OverrideForStore, model => model.StoreInformationSettings.YoutubeLink, Model.ActiveStoreScopeConfiguration)
+                @Html.NopLabelFor(model => model.StoreInformationSettings.YoutubeLink):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.StoreInformationSettings.YoutubeLink)
+                @Html.ValidationMessageFor(model => model.StoreInformationSettings.YoutubeLink)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.OverrideStoreCheckboxFor(model => model.StoreInformationSettings.GooglePlusLink_OverrideForStore, model => model.StoreInformationSettings.GooglePlusLink, Model.ActiveStoreScopeConfiguration)
+                @Html.NopLabelFor(model => model.StoreInformationSettings.GooglePlusLink):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.StoreInformationSettings.GooglePlusLink)
+                @Html.ValidationMessageFor(model => model.StoreInformationSettings.GooglePlusLink)
             </td>
         </tr>
     </table>
@@ -264,6 +345,36 @@
             <td class="adminData">
                 @Html.EditorFor(model => model.SeoSettings.CanonicalUrlsEnabled)
                 @Html.ValidationMessageFor(model => model.SeoSettings.CanonicalUrlsEnabled)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.OverrideStoreCheckboxFor(model => model.SeoSettings.WwwRequirement_OverrideForStore, model => model.SeoSettings.WwwRequirement, Model.ActiveStoreScopeConfiguration)
+                @Html.NopLabelFor(model => model.SeoSettings.WwwRequirement):
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(model => model.SeoSettings.WwwRequirement, Model.SeoSettings.WwwRequirementValues)
+                @Html.ValidationMessageFor(model => model.SeoSettings.WwwRequirement)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.OverrideStoreCheckboxFor(model => model.SeoSettings.EnableJsBundling_OverrideForStore, model => model.SeoSettings.EnableJsBundling, Model.ActiveStoreScopeConfiguration)
+                @Html.NopLabelFor(model => model.SeoSettings.EnableJsBundling):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.SeoSettings.EnableJsBundling)
+                @Html.ValidationMessageFor(model => model.SeoSettings.EnableJsBundling)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.OverrideStoreCheckboxFor(model => model.SeoSettings.EnableCssBundling_OverrideForStore, model => model.SeoSettings.EnableCssBundling, Model.ActiveStoreScopeConfiguration)
+                @Html.NopLabelFor(model => model.SeoSettings.EnableCssBundling):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.SeoSettings.EnableCssBundling)
+                @Html.ValidationMessageFor(model => model.SeoSettings.EnableCssBundling)
             </td>
         </tr>
     </table>
@@ -465,6 +576,24 @@
             <td class="adminData">
                 @Html.EditorFor(model => model.LocalizationSettings.LoadAllLocaleRecordsOnStartup)
                 @Html.ValidationMessageFor(model => model.LocalizationSettings.LoadAllLocaleRecordsOnStartup)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.LocalizationSettings.LoadAllLocalizedPropertiesOnStartup):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.LocalizationSettings.LoadAllLocalizedPropertiesOnStartup)
+                @Html.ValidationMessageFor(model => model.LocalizationSettings.LoadAllLocalizedPropertiesOnStartup)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.LocalizationSettings.LoadAllUrlRecordsOnStartup):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.LocalizationSettings.LoadAllUrlRecordsOnStartup)
+                @Html.ValidationMessageFor(model => model.LocalizationSettings.LoadAllUrlRecordsOnStartup)
             </td>
         </tr>
     </table>
