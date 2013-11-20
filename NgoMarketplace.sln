@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "nopCommerce", "http://localhost:49639", "{4E4ABF36-BF64-4650-BA7E-0F99EF0929C1}"
 	ProjectSection(WebsiteProperties) = preProject
 		UseIISExpress = "true"
@@ -22,6 +20,13 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "nopCommerce", "http://local
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		SlnRelativePath = "nopCommerce\"
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{31A3D0B2-679D-4BFE-8A77-0B0CC23CA81A}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
 Global
